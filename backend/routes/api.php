@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\DetailProductController;
 use App\Http\Controllers\ProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,8 +17,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+// auth
+Route::post('/login', [AuthenticationController::class, 'login']);
+Route::post('/register', [AuthenticationController::class, 'store']);
 
+// products user
 Route::get('/products', [ProductsController::class, 'index']);
+Route::get('/product/{id}', [ProductsController::class, 'show']);
+
+Route::middleware(['auth:sanctum'])->group(function () {
+  // auth
+  Route::get('/logout', [AuthenticationController::class, 'logout']);
+});
