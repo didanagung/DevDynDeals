@@ -11,7 +11,7 @@ class DetailProduct extends Model
     use HasFactory;
     protected $table ="details_product";
     protected $fillable = [
-        'statusenabled', 'product_id', 'color_id', 'size_id', 'qty_product'
+        'id','statusenabled', 'product_id', 'color_id', 'size_id', 'gender_id', 'qty_product'
     ];
 
     public function product() : BelongsTo {

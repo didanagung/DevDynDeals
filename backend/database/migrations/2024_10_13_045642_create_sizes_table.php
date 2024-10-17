@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('sizes', function (Blueprint $table) {
             $table->id();
             $table->boolean('statusenabled');
-            $table->string('size_name', 255);
+            $table->string('size_name', 255)->unique();;
             $table->timestamps();
         });
     }
