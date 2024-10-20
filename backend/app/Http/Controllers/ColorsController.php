@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Colors;
 use App\Http\Requests\StoreColorsRequest;
 use App\Http\Requests\UpdateColorsRequest;
+use App\Http\Resources\ColorResource;
+use Illuminate\Support\Facades\DB;
 
 class ColorsController extends Controller
 {
@@ -15,7 +17,8 @@ class ColorsController extends Controller
      */
     public function index()
     {
-        //
+        $colors = Colors::where('statusenabled', true)->get();
+        return ColorResource::collection($colors);
     }
 
     /**
@@ -36,7 +39,31 @@ class ColorsController extends Controller
      */
     public function store(StoreColorsRequest $request)
     {
-        //
+        $request->validate([
+            'color_name' => 'required|max:255',
+        ]);
+        DB::beginTransaction();
+        try {
+            Colors::create([
+                'statusenabled' => true,
+                'color_name' => $request->color_name,
+            ]);
+            $status_code = true;
+        } catch (\Throwable $th) {
+            $status_code = false;
+        }
+
+        if ($status_code) {
+            DB::commit();
+            return response()->json([
+                'message' => 'Warna berhasil ditambahkan'
+            ], 201);
+        } else {
+            DB::rollBack();  
+            return response()->json([
+                'message' => 'Warna gagal ditambahkan',
+            ], 400);
+        }
     }
 
     /**
@@ -45,9 +72,22 @@ class ColorsController extends Controller
      * @param  \App\Models\Colors  $colors
      * @return \Illuminate\Http\Response
      */
-    public function show(Colors $colors)
+    public function show(Colors $colors, $id)
     {
-        //
+        $color = Colors::where('id', $id)->first();
+        $to_array = (array) $color;
+
+        if (count($to_array) > 0) {
+            return response()->json([
+                'message' => "Data Berhasil Ditemukan",
+                'data' => new ColorResource($color)
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => "Data Tidak Ditemukan",
+            ], 400);
+        }
+        
     }
 
     /**

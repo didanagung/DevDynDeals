@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 class ProductsController extends Controller
 {
     public function index() {
-        $products = Products::all();
+        $products = Products::where('statusenabled', true)->get();
         // return response()->json($products);
         return ProductsResource::collection($products);
     }
