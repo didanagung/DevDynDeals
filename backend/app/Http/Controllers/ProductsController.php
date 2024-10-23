@@ -116,10 +116,10 @@ class ProductsController extends Controller
 
     public function destroy(Request $request) {
         // soft delete ala ala
-        $data_old_product = Products::find($request->id);
+        // $data_old_product = Products::find($request->id);
         DB::beginTransaction();
         try {
-            DetailProduct::where('product_id', $data_old_product->id)->update([
+            DetailProduct::where('product_id', $request->id)->update([
                 'statusenabled' => false
             ]);
 

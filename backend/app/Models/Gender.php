@@ -9,4 +9,7 @@ class Gender extends Model
 {
     use HasFactory;
     protected $table ="gendre";
+    protected $fillable = [
+        'statusenabled', 'genre_name'
+    ];
 }

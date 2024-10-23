@@ -9,4 +9,7 @@ class Sizes extends Model
 {
     use HasFactory;
     protected $table ="sizes";
+    protected $fillable = [
+        'statusenabled', 'size_name'
+    ];
 }

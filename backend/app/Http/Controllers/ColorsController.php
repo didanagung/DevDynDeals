@@ -74,7 +74,9 @@ class ColorsController extends Controller
      */
     public function show(Colors $colors, $id)
     {
-        $color = Colors::where('id', $id)->first();
+        $color = Colors::where('id', $id)
+        ->where('statusenabled', true)
+        ->first();
         $to_array = (array) $color;
 
         if (count($to_array) > 0) {
@@ -110,7 +112,31 @@ class ColorsController extends Controller
      */
     public function update(UpdateColorsRequest $request, Colors $colors)
     {
-        //
+        $request->validate([
+            'color_name' => 'required|max:255',
+        ]);
+        DB::beginTransaction();
+
+        try {
+            Colors::where('id', $request->id)->update([
+                'color_name' => $request->color_name
+            ]);
+            $status_code = true;
+        } catch (\Throwable $th) {
+            $status_code = false;
+        }
+
+        if ($status_code) {
+            DB::commit();
+            return response()->json([
+                'message' => 'Warna berhasil diubah'
+            ], 201);
+        } else {
+            DB::rollBack();  
+            return response()->json([
+                'message' => 'Warna gagal diubah',
+            ], 400);
+        }
     }
 
     /**
@@ -119,8 +145,31 @@ class ColorsController extends Controller
      * @param  \App\Models\Colors  $colors
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Colors $colors)
+    public function destroy(Colors $colors, $id)
     {
-        //
+
+        // $data_old_color = Colors::where('id', $id)->first();
+        DB::beginTransaction();
+        try {
+            Colors::where('id', $id)->update([
+                'statusenabled' => false
+            ]);
+
+            $status_code = true;
+        } catch (\Throwable $th) {
+            $status_code = false;
+        }
+
+        if ($status_code) {
+            DB::commit();
+            return response()->json([
+                'message' => 'Warna berhasil dihapus'
+            ], 200);
+        } else {
+            DB::rollBack();  
+            return response()->json([
+                'message' => 'Warna gagal dihapus',
+            ], 400);
+        }
     }
 }
