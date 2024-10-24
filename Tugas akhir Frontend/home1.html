@@ -4,6 +4,8 @@
    Devdyn Deals
   </title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
    body {
             margin: 0;
@@ -132,6 +134,21 @@
         .footer .contact-info i {
             margin-right: 10px;
         }
+
+        #logoutButton {
+            /* background-color: #512da8; */
+            background: linear-gradient(192.5deg, #3A5C69 0.1%, #558799 43.01%, #73B6CF 99.9%);
+            color: #fff;
+            font-size: 12px;
+            padding: 10px 45px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            cursor: pointer;
+        }
   </style>
  </head>
  <body>
@@ -213,6 +230,9 @@
       XXL
      </li>
     </ul>
+   </div>
+   <div class="filter-group">
+    <button id="logoutButton">Logout</button>
    </div>
   </div>
   <div class="content">
@@ -368,5 +388,39 @@
     Copyright © DevdynDeals 2024
    </p>
   </div>
+  <script>
+    $(document).ready(function() {
+        // cek session udah ada apa belum
+        const token = sessionStorage.getItem('token');
+        if (token == null) {
+            // arahkan jika user belum login
+            setTimeout(function() {
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+
+        $('#logoutButton').click(function() {
+                // Kirim permintaan logout
+                const token = sessionStorage.getItem('token');
+                axios.get('http://127.0.0.1:9999/api/logout', {}, { 
+                    headers: {
+                        'Authorization': 'Bearer ' + token, // Tambahkan token di header
+                    }
+                })
+                .then(function(response) {
+                    // Tampilkan pesan logout berhasil
+                    alert(response.data.message);
+                    sessionStorage.clear();
+                    
+                    // Alihkan ke halaman login atau halaman lain
+                    window.location.href = 'index.html'; // Ganti dengan halaman tujuan
+                })
+                .catch(function(error) {
+                    // Tampilkan pesan error
+                    alert('Terjadi kesalahan saat logout: ' + error.response.data.message);
+                });
+            });
+    })
+  </script>
  </body>
 </html>

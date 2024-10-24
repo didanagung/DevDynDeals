@@ -6,6 +6,8 @@
     <title>Login Page</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
@@ -56,7 +58,8 @@
     }
 
     .container button{
-        background-color: #512da8;
+        /* background-color: #512da8; */
+        background: linear-gradient(192.5deg, #3A5C69 0.1%, #558799 43.01%, #73B6CF 99.9%);
         color: #fff;
         font-size: 12px;
         padding: 10px 45px;
@@ -170,9 +173,10 @@
     }
 
     .toggle{
-        background-color: #512da8;
+        /* background-color: #512da8; */
         height: 100%;
-        background: linear-gradient(to right, #5c6bc0, #512da8);
+        /* background: linear-gradient(to right, #5c6bc0, #512da8); */
+        background: linear-gradient(192.5deg, #3A5C69 0.1%, #558799 43.01%, #73B6CF 99.9%);
         color: #fff;
         position: relative;
         left: -100%;
@@ -224,13 +228,13 @@
     <div class="form-container sign-up">
     <form>
         <h1>Create Account</h1>
-        <div class="social-icons">
+        <!-- <div class="social-icons">
         <a href="#" class="icon"><i class="fa-brands fa-google"></i></a>
         <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
         <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
         <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
     </div>
-    <span>or use your email for registeration</span>
+    <span>or use your email for registeration</span> -->
     <input type="text" placeholder="Name">
     <input type="email" placeholder="Email">
     <input type="password" placeholder="Password">
@@ -238,19 +242,20 @@
     </form>
     </div>
     <div class="form-container sign-in">
-    <form>
+    <form id="userForm">
         <h1>Login To Your Account</h1>
-        <div class="social-icons">
+        <!-- <div class="social-icons">
         <a href="#" class="icon"><i class="fa-brands fa-google"></i></a>
         <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
         <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
         <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
     </div>
-    <span>or use your email password</span>
-    <input type="email" placeholder="Email">
-    <input type="password" placeholder="Password">
+    <span>or use your email password</span> -->
+    <input type="email" placeholder="Email" name="email" id="email">
+    <input type="password" placeholder="Password" name="password" id="password">
     <a href="#">Forget Your Password?</a>
-    <button>Sign In</button>
+    <button type="submit">Sign In</button>
+    <p id="response"></p>
     </form>
     </div>
     <div class="toggle-container">
@@ -280,6 +285,44 @@
 
         loginBtn.addEventListener('click', ()=>{
             container.classList.remove("active");
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // cek session udah ada apa belum
+            var token = sessionStorage.getItem('token');
+            if (token != null) {
+                // arahkan jika user sudah login, guna tidak double login
+                setTimeout(function() {
+                    window.location.href = 'home1.html';
+                }, 1000);
+            }
+            // Handle form submit
+            $('#userForm').submit(function(event) {
+                event.preventDefault(); // Mencegah reload halaman
+
+                // Ambil data dari form
+                var email = $('#email').val();
+                var password = $('#password').val();
+
+                axios.post('http://127.0.0.1:9999/api/login', {
+                    email: email,
+                    password: password
+                })
+                .then(function (response) {
+                    // Tampilkan response API di div response
+                    if (response.status == 200) {
+                        sessionStorage.setItem('token', response.data.data.token);
+                        setTimeout(function() {
+                            window.location.href = 'home1.html'; // Ganti dengan halaman tujuan
+                        }, 2000);
+                    }
+                })
+                .catch(function (error) {
+                    // Tampilkan pesan error
+                    console.log(error.message);
+                });
+            });
         });
     </script>
  </body>
