@@ -4,6 +4,7 @@
    DevDyn Deals
   </title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
    body {
             margin: 0;
@@ -119,9 +120,7 @@
     </span>
    </div>
    <div class="user">
-    <span>
-     Mulyana
-    </span>
+    <span id="username"></span>
     <img alt="User profile picture" height="30" src="https://storage.googleapis.com/a1aa/image/eNTfxhbCsmhlkkaKHVdHdJcOabDzzB7ImfPpDogZsNZE2DTnA.jpg" width="30"/>
    </div>
   </div>
@@ -174,5 +173,21 @@
     Copyright © DevdynDeals 2024
    </div>
   </div>
+  <script>
+    $(document).ready(function() {
+        const token = sessionStorage.getItem('token');
+        const username = sessionStorage.getItem('username');
+        if (token == null) {
+            // arahkan jika user belum login
+            setTimeout(function() {
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+
+        if (username != null) {
+            $('#username').html(`<strong>${username.toUpperCase()}</strong>`);
+        }
+    })
+  </script>
  </body>
 </html>

@@ -24,15 +24,14 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('/register', [AuthenticationController::class, 'store']);
 
-// products user
-Route::get('/products', [ProductsController::class, 'index']);
-Route::get('/product/{id}', [ProductsController::class, 'show']);
-
 Route::middleware(['auth:sanctum'])->group(function () {
   // auth
   Route::get('/logout', [AuthenticationController::class, 'logout']);
 
   // products
+  Route::get('/products/{some}', [ProductsController::class, 'likeData']);
+  Route::get('/products', [ProductsController::class, 'index']);
+  Route::get('/product/{id}', [ProductsController::class, 'show']);
   Route::post('/product', [ProductsController::class, 'store']);
   Route::put('/product/{id}', [ProductsController::class, 'update']);
   Route::delete('/product/{id}', [ProductsController::class, 'destroy']);

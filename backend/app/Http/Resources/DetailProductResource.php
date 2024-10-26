@@ -20,6 +20,8 @@ class DetailProductResource extends JsonResource
             'name' => $this->name,
             'short_description' => $this->short_description,
             'description' => $this->description,
+            'image' => $this->image,
+            'price' => $this->price,
             'detail_products' => $this->whenLoaded('detailProducts')
         ];
     }

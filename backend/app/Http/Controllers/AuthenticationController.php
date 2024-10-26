@@ -57,6 +57,7 @@ class AuthenticationController extends Controller
 
         $success['token'] = $user->createToken('user_login')->plainTextToken;
         $success['email'] = $user->email;
+        $success['name'] = $user->name;
         $success['norec'] = $user->id;
         $success['role'] = $user->role;
 

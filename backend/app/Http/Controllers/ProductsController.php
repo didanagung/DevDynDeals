@@ -25,44 +25,46 @@ class ProductsController extends Controller
     }
 
     public function store(Request $request) {
-        $image_data = file_get_contents($request->file);
-        $base64 = base64_encode($image_data );
-        return $base64;
+        // $image_data = file_get_contents($request->file);
+        // $base64 = base64_encode($image_data);
+        // return $base64;
         $request->validate([
             'name' => 'required|max:255',
             'short_description' => 'required|max:100',
             'description' => 'required',
-            'color_id' => 'required',
-            'size_id' => 'required',
-            'qty_product' => 'required',
-            'gender_id' => 'required',
+            'price' => 'required',
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            // 'color_id' => 'required',
+            // 'size_id' => 'required',
+            // 'qty_product' => 'required',
+            // 'gender_id' => 'required',
         ]);
 
-        // if ($request->file) {
-        //     $file_name = $this->generateRandomString();
-        //     $extension = $request->file->extension();
-
-        //     Storage::putFileAs('images', );
-        // }
+        if ($request->file) {
+            $image_data = file_get_contents($request->file);
+            $base64 = base64_encode($image_data);
+        }
         DB::beginTransaction();
         try {
-            $produk = Products::create([
+            Products::create([
                 'id' => Str::uuid(),
                 'statusenabled' => true,
                 'name' => $request->name,
                 'short_description' => $request->short_description,
-                'description' => $request->description
+                'description' => $request->description,
+                'price' => $request->price,
+                'image' => $base64
             ]);
     
-            DetailProduct::create([
-                'id' => Str::uuid(),
-                'statusenabled' => true,
-                'product_id' => $produk->id,
-                'color_id' => $request->color_id,
-                'size_id' => $request->size_id,
-                'gender_id' => $request->gender_id,
-                'qty_product' => (int) $request->qty_product
-            ]);
+            // DetailProduct::create([
+            //     'id' => Str::uuid(),
+            //     'statusenabled' => true,
+            //     'product_id' => $produk->id,
+            //     'color_id' => $request->color_id,
+            //     'size_id' => $request->size_id,
+            //     'gender_id' => $request->gender_id,
+            //     'qty_product' => (int) $request->qty_product
+            // ]);
 
             $status_code = true;
         } catch (\Throwable $th) {
@@ -83,28 +85,29 @@ class ProductsController extends Controller
     }
 
     public function update(Request $request) {
-        $data_old_product = Products::find($request->id);
+        // $data_old_product = Products::find($request->id);
         $request->validate([
             'name' => 'required|max:255',
             'short_description' => 'required|max:100',
             'description'    => 'required',
-            'color_id'    => 'required',
-            'size_id'       => 'required',
-            'qty_product'     => 'required',
+            // 'color_id'    => 'required',
+            // 'size_id'       => 'required',
+            // 'qty_product'     => 'required',
         ]);
         DB::beginTransaction();
         try {
-            DetailProduct::where('product_id', $data_old_product->id)->update([
-                'color_id' => $request->color_id,
-                'size_id' => $request->size_id,
-                'gender_id' => $request->gender_id,
-                'qty_product' => $request->qty_product
-            ]);
+            // DetailProduct::where('product_id', $data_old_product->id)->update([
+            //     'color_id' => $request->color_id,
+            //     'size_id' => $request->size_id,
+            //     'gender_id' => $request->gender_id,
+            //     'qty_product' => $request->qty_product
+            // ]);
 
             Products::where('id', $request->id)->update([
                 'name' => $request->name,
                 'short_description' => $request->short_description,
-                'description' => $request->description
+                'description' => $request->description,
+                'price' => $request->price
             ]);
 
             $status_code = true;
@@ -156,15 +159,8 @@ class ProductsController extends Controller
         }
     }
 
-    function generateRandomString($length = 20) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-    
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[random_int(0, $charactersLength - 1)];
-        }
-    
-        return $randomString;
+    public function likeData($some) {
+        $list_products = Products::where('name', 'LIKE', "%$some%")->get();
+        return ProductsResource::collection($list_products);
     }
 }

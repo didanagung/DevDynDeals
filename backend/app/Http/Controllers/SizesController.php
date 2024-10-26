@@ -39,13 +39,13 @@ class SizesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'size_name' => 'required|max:255',
+            'size_name' => 'required|max:5',
         ]);
         DB::beginTransaction();
         try {
             Sizes::create([
                 'statusenabled' => true,
-                'size_name' => $request->size_name,
+                'size_name' => strtoupper($request->size_name)
             ]);
             $status_code = true;
         } catch (\Throwable $th) {
@@ -111,13 +111,13 @@ class SizesController extends Controller
     public function update(Request $request, Sizes $sizes)
     {
         $request->validate([
-            'size_name' => 'required|max:255',
+            'size_name' => 'required|max:5',
         ]);
         DB::beginTransaction();
 
         try {
             Sizes::where('id', $request->id)->update([
-                'size_name' => $request->size_name
+                'size_name' => strtoupper($request->size_name)
             ]);
             $status_code = true;
         } catch (\Throwable $th) {

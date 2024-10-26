@@ -15,6 +15,7 @@ class GenderResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'genre_name' => $this->genre_name,
         ];
     }
