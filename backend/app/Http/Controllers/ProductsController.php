@@ -8,6 +8,7 @@ use App\Models\DetailProduct;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProductsController extends Controller
@@ -24,6 +25,9 @@ class ProductsController extends Controller
     }
 
     public function store(Request $request) {
+        $image_data = file_get_contents($request->file);
+        $base64 = base64_encode($image_data );
+        return $base64;
         $request->validate([
             'name' => 'required|max:255',
             'short_description' => 'required|max:100',
@@ -33,6 +37,13 @@ class ProductsController extends Controller
             'qty_product' => 'required',
             'gender_id' => 'required',
         ]);
+
+        // if ($request->file) {
+        //     $file_name = $this->generateRandomString();
+        //     $extension = $request->file->extension();
+
+        //     Storage::putFileAs('images', );
+        // }
         DB::beginTransaction();
         try {
             $produk = Products::create([
@@ -143,5 +154,17 @@ class ProductsController extends Controller
                 'message' => 'Produk gagal dihapus',
             ], 400);
         }
+    }
+
+    function generateRandomString($length = 20) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+    
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[random_int(0, $charactersLength - 1)];
+        }
+    
+        return $randomString;
     }
 }

@@ -1,0 +1,633 @@
+{
+	"info": {
+		"_postman_id": "785b21ce-e3b5-4067-aa5c-a02560b2dc3f",
+		"name": "DevDynDealsApi",
+		"description": "Dokumentasi API untuk aplikasi DevDynDeals",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "27620521"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"acakan@gmail.com\",\r\n    \"password\" : \"acakan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{UrlApi}}/login"
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "4|m8T20fakYKXAeuk3VWLlbrRR2cvMUJ1e64ykZhDi"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1|ZPhczCQ8FiQJUur1pHyp9irsIYBx4nUINPhfoHCc",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": "{{UrlApi}}/logout"
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"acakan\",\r\n    \"email\": \"acakan@gmail.com\",\r\n    \"password\": \"acakan\",\r\n    \"confirm_password\": \"acakan\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{UrlApi}}/register"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "product",
+					"item": [
+						{
+							"name": "tambah produk",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"commit\",\r\n    \"short_description\" : \"commito\",\r\n    \"description\" : \"ini adalah kemeja polo poloos\",\r\n    \"color_id\" : 1,\r\n    \"size_id\" : 1,\r\n    \"gender_id\" : 1,\r\n    \"qty_product\" : 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{UrlApi}}/product"
+							},
+							"response": []
+						},
+						{
+							"name": "update produk",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|7yuAlPhlthIQqsny1pg2Jkb7tbbWmcCIS24cNB8g"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"commit update eee\",\r\n    \"short_description\" : \"commito\",\r\n    \"description\" : \"ini adalah kemeja polo poloos\",\r\n    \"color_id\" : 1,\r\n    \"size_id\" : 1,\r\n    \"gender_id\" : 1,\r\n    \"qty_product\" : 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{UrlApi}}/product/7bda961b-92c0-44a9-b4fb-7a32397266cb"
+							},
+							"response": []
+						},
+						{
+							"name": "delete produk",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "1|7yuAlPhlthIQqsny1pg2Jkb7tbbWmcCIS24cNB8g"
+									}
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "{{UrlApi}}/product/7bda961b-92c0-44a9-b4fb-7a32397266cb"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "size",
+					"item": [
+						{
+							"name": "add",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"size_name\" : \"M\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{UrlApi}}/size"
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "{{UrlApi}}/sizes"
+							},
+							"response": []
+						},
+						{
+							"name": "show one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "{{UrlApi}}/size/1"
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"size_name\": \"L\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{UrlApi}}/size/1"
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "{{UrlApi}}/size/1"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "color",
+					"item": [
+						{
+							"name": "add color",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"color_name\" : \"Hitam\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{UrlApi}}/color"
+							},
+							"response": []
+						},
+						{
+							"name": "show color",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "{{UrlApi}}/colors"
+							},
+							"response": []
+						},
+						{
+							"name": "show one color",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "{{UrlApi}}/color/1"
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"color_name\" : \"Hideung\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{UrlApi}}/color/1"
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "{{UrlApi}}/color/1"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "gendre",
+					"item": [
+						{
+							"name": "add Gender",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"genre_name\" : \"Perempuan\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{UrlApi}}/gender"
+							},
+							"response": []
+						},
+						{
+							"name": "tampil gendre",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "{{UrlApi}}/genders"
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"genre_name\": \"Priai\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{UrlApi}}/gender/1"
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": "{{UrlApi}}/gender/1"
+							},
+							"response": []
+						},
+						{
+							"name": "show one",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "3|MTQlr1GzGbHX3Ay32THF3aFocRyr4VZusRFP6qmK"
+									}
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "{{UrlApi}}/gender/2"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "get_product",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{UrlApi}}/products?",
+					"host": [
+						"{{UrlApi}}"
+					],
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "detail_product",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": "{{UrlApi}}/product/dd0628f5-8923-11ef-8322-00ff73f0635f"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "UrlApi",
+			"value": "http://127.0.0.1:9999/api",
+			"type": "string"
+		}
+	]
+}

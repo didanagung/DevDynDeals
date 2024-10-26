@@ -226,7 +226,7 @@
  <body>
   <div class="container" id="container">
     <div class="form-container sign-up">
-    <form>
+    <form id="registerForm">
         <h1>Create Account</h1>
         <!-- <div class="social-icons">
         <a href="#" class="icon"><i class="fa-brands fa-google"></i></a>
@@ -235,10 +235,11 @@
         <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
     </div>
     <span>or use your email for registeration</span> -->
-    <input type="text" placeholder="Name">
-    <input type="email" placeholder="Email">
-    <input type="password" placeholder="Password">
-    <button>Sign Up</button>
+    <input type="text" placeholder="Name" id="name_register">
+    <input type="email" placeholder="Email" id="email_register">
+    <input type="password" placeholder="Password" id="password_register">
+    <input type="password" placeholder="Confirm Password" id="confirm_password_register">
+    <button type="submit">Sign Up</button>
     </form>
     </div>
     <div class="form-container sign-in">
@@ -253,7 +254,7 @@
     <span>or use your email password</span> -->
     <input type="email" placeholder="Email" name="email" id="email">
     <input type="password" placeholder="Password" name="password" id="password">
-    <a href="#">Forget Your Password?</a>
+    <!-- <a href="#">Forget Your Password?</a> -->
     <button type="submit">Sign In</button>
     <p id="response"></p>
     </form>
@@ -291,11 +292,18 @@
         $(document).ready(function() {
             // cek session udah ada apa belum
             var token = sessionStorage.getItem('token');
+            var role = sessionStorage.getItem('role');
             if (token != null) {
-                // arahkan jika user sudah login, guna tidak double login
-                setTimeout(function() {
-                    window.location.href = 'home1.html';
-                }, 1000);
+                if (role == 1) {
+                    setTimeout(function() {
+                        window.location.href = 'admin/index.html';
+                    }, 2000);
+                } else {
+                    // arahkan jika user sudah login, guna tidak double login
+                    setTimeout(function() {
+                        window.location.href = 'home1.html';
+                    }, 2000);
+                }
             }
             // Handle form submit
             $('#userForm').submit(function(event) {
@@ -305,22 +313,68 @@
                 var email = $('#email').val();
                 var password = $('#password').val();
 
-                axios.post('http://127.0.0.1:9999/api/login', {
+                $.post('http://127.0.0.1:9999/api/login', {
                     email: email,
                     password: password
-                })
-                .then(function (response) {
+                }, function(response) {
                     // Tampilkan response API di div response
                     if (response.status == 200) {
-                        sessionStorage.setItem('token', response.data.data.token);
-                        setTimeout(function() {
-                            window.location.href = 'home1.html'; // Ganti dengan halaman tujuan
-                        }, 2000);
+                        sessionStorage.setItem('token', response.data.token);
+                        sessionStorage.setItem('username', response.data.name);
+                        sessionStorage.setItem('role', response.data.role);
+                        sessionStorage.setItem('norec', response.data.norec);
+                        if (response.data.role == 1) {
+                            setTimeout(function() {
+                                window.location.href = 'admin/index.html'; // Ganti dengan halaman tujuan
+                            }, 2000);
+                        }else {
+                            setTimeout(function() {
+                                window.location.href = 'home1.html'; // Ganti dengan halaman tujuan
+                            }, 2000);
+                        }
                     }
-                })
-                .catch(function (error) {
-                    // Tampilkan pesan error
-                    console.log(error.message);
+                }).fail(function(xhr, status, error) {
+                    console.error('Error:', error);
+                    alert("Email / Password salah");
+                });
+            });
+
+            // form register
+            $('#registerForm').submit(function(event) {
+                event.preventDefault(); // Mencegah reload halaman
+
+                // Ambil data dari form
+                var name_regis = $('#name_register').val();
+                var email_regis = $('#email_register').val();
+                var password_regis = $('#password_register').val();
+                var confirm_password_regis = $('#confirm_password_register').val();
+
+                $.post('http://127.0.0.1:9999/api/register', {
+                    name: name_regis,
+                    email: email_regis,
+                    password: password_regis,
+                    confirm_password: confirm_password_regis
+                }, function(response) {
+                    console.log(response);
+                    
+                    // Tampilkan response API di div response
+                    if (response.success == 201) {
+                        sessionStorage.setItem('token', response.data.token);
+                        sessionStorage.setItem('username', response.data.name);
+                        sessionStorage.setItem('role', response.data.role);
+                        sessionStorage.setItem('norec', response.data.norec);
+                        if (response.data.role == 1) {
+                            setTimeout(function() {
+                                window.location.href = 'admin/index.html'; // Ganti dengan halaman tujuan
+                            }, 2000);
+                        }else {
+                            setTimeout(function() {
+                                window.location.href = 'home1.html'; // Ganti dengan halaman tujuan
+                            }, 2000);
+                        }
+                    }
+                }).fail(function(xhr, status, error) {
+                    console.error('Error:', error);
                 });
             });
         });

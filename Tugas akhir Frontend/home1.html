@@ -167,7 +167,7 @@
     </button>
    </div>
    <div class="user-info">
-    <span>
+    <span id="username">
      Mulyana
     </span>
     <img alt="User Avatar" height="40" src="https://storage.googleapis.com/a1aa/image/fycbpDJmrZywYSgNfIaExi9eqMAeM22AbJGAnvKfHOXXsNMdC.jpg" width="40"/>
@@ -178,58 +178,20 @@
     <h3>
      Division
     </h3>
-    <ul>
-     <li>
-      <input type="checkbox"/>
-      Mens
-     </li>
-     <li>
-      <input type="checkbox"/>
-      Woman
-     </li>
-    </ul>
+    <ul id="listGendre"></ul>
    </div>
    <div class="filter-group">
     <h3>
      Colours
     </h3>
-    <ul>
-     <li>
-      <input type="checkbox"/>
-      Red
-     </li>
-     <li>
-      <input type="checkbox"/>
-      Blue
-     </li>
-     <li>
-      <input type="checkbox"/>
-      Yellow
-     </li>
-    </ul>
+    <!-- list colors -->
+    <ul id="listColors"></ul>
    </div>
    <div class="filter-group">
     <h3>
      Size
     </h3>
-    <ul>
-     <li>
-      <input type="checkbox"/>
-      M
-     </li>
-     <li>
-      <input type="checkbox"/>
-      L
-     </li>
-     <li>
-      <input type="checkbox"/>
-      XL
-     </li>
-     <li>
-      <input type="checkbox"/>
-      XXL
-     </li>
-    </ul>
+    <ul id="listSizes"></ul>
    </div>
    <div class="filter-group">
     <button id="logoutButton">Logout</button>
@@ -392,6 +354,7 @@
     $(document).ready(function() {
         // cek session udah ada apa belum
         const token = sessionStorage.getItem('token');
+        const username = sessionStorage.getItem('username');
         if (token == null) {
             // arahkan jika user belum login
             setTimeout(function() {
@@ -399,27 +362,107 @@
             }, 2000);
         }
 
+        if (username != null) {
+            $('#username').html(`<strong>${username.toUpperCase()}</strong>`);
+        }
+
         $('#logoutButton').click(function() {
-                // Kirim permintaan logout
-                const token = sessionStorage.getItem('token');
-                axios.get('http://127.0.0.1:9999/api/logout', {}, { 
-                    headers: {
-                        'Authorization': 'Bearer ' + token, // Tambahkan token di header
-                    }
-                })
-                .then(function(response) {
-                    // Tampilkan pesan logout berhasil
-                    alert(response.data.message);
+            // Kirim permintaan logout
+            $.ajax({
+                url: 'http://127.0.0.1:9999/api/logout', // Ganti dengan URL API yang sesuai
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}` // Jika menggunakan token otentikasi
+                },
+                xhrFields: {
+                    withCredentials: true // Mengizinkan pengiriman cookies
+                },
+                success: function(response) {
                     sessionStorage.clear();
-                    
-                    // Alihkan ke halaman login atau halaman lain
-                    window.location.href = 'index.html'; // Ganti dengan halaman tujuan
-                })
-                .catch(function(error) {
-                    // Tampilkan pesan error
-                    alert('Terjadi kesalahan saat logout: ' + error.response.data.message);
-                });
+                    window.location.href = 'index.html';
+                },
+                error: function(xhr, status, error) {
+                    alert('Terjadi kesalahan: ' + error);
+                }
             });
+        });
+
+        // Gendre
+        $.ajax({
+            url: 'http://127.0.0.1:9999/api/genders', // Ganti dengan URL API yang sesuai
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}` // Jika menggunakan token otentikasi
+            },
+            xhrFields: {
+                withCredentials: true // Mengizinkan pengiriman cookies
+            },
+            success: function(response) {
+                if (response.data.length > 0) {
+                    response.data.forEach((element, index) => {
+                        console.log('element', element);
+                        console.log('index', index);
+                        $('#listGendre').append(`<li>
+                            <input type="checkbox"/>
+                            ${element.genre_name}
+                            </li>`);
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Terjadi kesalahan: ' + error);
+            }
+        });
+
+        // Colors
+        $.ajax({
+            url: 'http://127.0.0.1:9999/api/colors', // Ganti dengan URL API yang sesuai
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}` // Jika menggunakan token otentikasi
+            },
+            xhrFields: {
+                withCredentials: true // Mengizinkan pengiriman cookies
+            },
+            success: function(response) {
+                if (response.data.length > 0) {
+                    response.data.forEach((element, index) => {
+                        $('#listColors').append(`<li>
+                            <input type="checkbox"/>
+                            ${element.color_name}
+                            </li>`);
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Terjadi kesalahan: ' + error);
+            }
+        });
+
+        // Sizes
+        $.ajax({
+            url: 'http://127.0.0.1:9999/api/sizes', // Ganti dengan URL API yang sesuai
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}` // Jika menggunakan token otentikasi
+            },
+            xhrFields: {
+                withCredentials: true // Mengizinkan pengiriman cookies
+            },
+            success: function(response) {
+                if (response.data.length > 0) {
+                    response.data.forEach((element, index) => {
+                        $('#listSizes').append(`<li>
+                            <input type="checkbox"/>
+                            ${element.size_name}
+                            </li>`);
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Terjadi kesalahan: ' + error);
+            }
+        });
     })
   </script>
  </body>

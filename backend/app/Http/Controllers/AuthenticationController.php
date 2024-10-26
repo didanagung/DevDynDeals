@@ -25,6 +25,9 @@ class AuthenticationController extends Controller
 
         $success['token'] = $user->createToken('user_login')->plainTextToken;
         $success['email'] = $user->email;
+        $success['name'] = $user->name;
+        $success['norec'] = $user->id;
+        $success['role'] = $user->role;
 
         return response()->json([
             'status' => 200,
@@ -37,19 +40,25 @@ class AuthenticationController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:'.User::class,
-            'password' => 'required',
+            'password' => 'required|min:6',
             'confirm_password' => 'required|same:password',
         ]);
+
+        $cek_user = User::all();
+        $role_user = count($cek_user) > 0 ? 2 : 1;
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'statusenabled' => true
+            'statusenabled' => true,
+            'role' => $role_user
         ]);
 
         $success['token'] = $user->createToken('user_login')->plainTextToken;
         $success['email'] = $user->email;
+        $success['norec'] = $user->id;
+        $success['role'] = $user->role;
 
         return response()->json([
             'success' => 201,
